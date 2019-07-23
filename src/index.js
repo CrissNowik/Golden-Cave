@@ -1,5 +1,6 @@
 import Phaser from "phaser";
-import logoImg from "./assets/logo.png";
+import background from "./assets/opp3_cave_tiles/environment/background/bg_cave.png"
+// import dwarf from "./assets/Dwarf_Sprite_Sheet1.2v";
 
 const config = {
   type: Phaser.AUTO,
@@ -15,18 +16,14 @@ const config = {
 const game = new Phaser.Game(config);
 
 function preload() {
-  this.load.image("logo", logoImg);
+  this.load.image("background", background)
+  // this.load.sprite("dwarf", dwarf);
 }
 
 function create() {
-  const logo = this.add.image(400, 150, "logo");
+  const background = this.add.image(64, 64, "background").setSize(2,2);
+}
 
-  this.tweens.add({
-    targets: logo,
-    y: 450,
-    duration: 2000,
-    ease: "Power2",
-    yoyo: true,
-    loop: -1
-  });
+function update() {
+  
 }
