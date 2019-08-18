@@ -4,22 +4,15 @@ class Scene1 extends Phaser.Scene{
         super('boot_game');
     }
     preload(){
-        this.load.spritesheet('dwarf_stand_R', './src/assets/player/dwarf_stand_R.png', {
-            frameWidth: 38,
-            frameHeight: 32
-        });
-        this.load.spritesheet('dwarf_move_R', './src/assets/player/dwarf_move_R.png', {
-            frameWidth: 38,
-            frameHeight: 32
-        });
-        this.load.spritesheet('bat', './src/assets/enemies/bat/bat_move_red.png', {
-            frameWidth: 16,
-            frameHeight: 24
-        });
-        this.load.spritesheet('bat_die', './src/assets/enemies/bat/bat_dead.png', {
-            frameWidth: 16,
-            frameHeight: 24
-        });
+        this.load.image('ground', './src/assets/environment/platform 128x64.png');
+        this.load.image('background', './src/assets/environment/Cave_background800x600.png');
+        this.load.image('green_gem', './src/assets/environment/green_gem.png');
+        this.load.spritesheet('platform_sprite', './src/assets/environment/platform_sprite.png', {frameWidth: 40, frameHeight: 38});
+        this.load.spritesheet('dwarf_stand_R', './src/assets/player/dwarf_stand_R.png', {frameWidth: 26, frameHeight: 20});
+        this.load.spritesheet('dwarf_move_R', './src/assets/player/dwarf_move_R.png', {frameWidth: 28, frameHeight: 21});
+        this.load.spritesheet('dwarf_jump_R', './src/assets/player/dwarf_jump_R.png', {frameWidth: 38, frameHeight: 32});
+        this.load.spritesheet('bat', './src/assets/enemies/bat/bat_move_red.png', {frameWidth: 16, frameHeight: 24});
+        this.load.spritesheet('bat_die', './src/assets/enemies/bat/bat_dead.png', {frameWidth: 16, frameHeight: 24});
     }
 
     create(){
@@ -38,6 +31,12 @@ class Scene1 extends Phaser.Scene{
             frameRate: 16,
             repeat: -1
         })
+        this.anims.create({
+            key: 'dwarf_jump_R',
+            frames: this.anims.generateFrameNumbers('dwarf_jump_R'),
+            frameRate: 10,
+            repeat: -1
+        })
 
         this.anims.create({
             key: 'bat_attack',
@@ -47,7 +46,7 @@ class Scene1 extends Phaser.Scene{
         });
 
         this.anims.create({
-            key: 'bat_die',
+            key: 'bat_die', 
             frames: this.anims.generateFrameNumbers('bat_die'),
             frameRate: 10,
             repeat: 0,
