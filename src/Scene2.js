@@ -12,13 +12,26 @@ class Scene2 extends Phaser.Scene{
 
         this.platforms = this.physics.add.staticGroup();
 
+        this.gems = this.physics.add.sprite(600, 360, 'gem_sprite', 3).setScale(2);
+       
+        this.physics.world.enable(this.gems);
+        this.gems.body.setCollideWorldBounds(true);
+    
+        this.gems.body.setFrictionX(3)
+        this.gems.body.setGravityY(300);
+
+        //  this.gems.create(260, 160, 'gem_sprite', 3).setScale(2);
+        console.log(this.gems)
+        
+
         this.player = this.physics.add.sprite(config.width / 8, config.height - 100, 'dwarf_stand_R');
-        this.player.setBounce(0.1);
-        this.player.setCollideWorldBounds(true);
+        this.player.setBounce(0.1).setCollideWorldBounds(true);
         this.player.body.setGravityY(300)
         this.player.setScale(3);
        
         this.physics.add.collider(this.player, this.platforms);
+        this.physics.add.collider(this.gems, this.platforms);
+        this.physics.add.collider(this.gems, this.player);
 
         this.bat = this.add.sprite(100,100, 'bat');
         this.bat.setScale(3);
@@ -35,7 +48,6 @@ class Scene2 extends Phaser.Scene{
         //     fill: "yellow"
         // })
         this.platformCreator(100, 100, 40,'platform_sprite', 1);
-        this.add.image(100, 70, 'green_gem').setScale(2);
         this.platformCreator(250, 200, 40,'platform_sprite', 1);
         this.platformCreator(300, 300, 40,'platform_sprite', 2); 
         this.platformCreator(500, 500, 40,'platform_sprite', 5); 
@@ -58,21 +70,18 @@ class Scene2 extends Phaser.Scene{
      */
     platformCreator(startX, startY, tileWidth, spriteSheetKey, centerTilesAmount, scale=1) {
         this.platforms.create(startX, startY, spriteSheetKey, 0).setScale(scale);
-        console.log("początek");
         
         for (let i = 1; i < centerTilesAmount+1; i++) {
             
             let nextTileX = startX + (tileWidth*i);
             this.platforms.create(nextTileX, startY, spriteSheetKey, 1).setScale(scale);
-            console.log("nextTileX ", nextTileX);
-            console.log("środek");
-            
         }
         let lastTileX = ((centerTilesAmount + 1) * tileWidth) + startX;
-            console.log("lastTileX  ", lastTileX);
-        
         this.platforms.create(lastTileX, startY, spriteSheetKey, 2).setScale(scale);
-            console.log("koniec"); 
+    }
+
+    gemCreator(x,y){
+        
     }
 
     movebat(bat, speed){
@@ -100,7 +109,6 @@ class Scene2 extends Phaser.Scene{
 
         if (this.cursors.left.isDown){
             if (this.cursors.up.isDown && this.player.body.touching.down) {
-                console.log("działa");
                 this.player.setVelocityX(-160);
                 this.player.setVelocityY(-430);
                 this.player.play('dwarf_jump_R', true)
@@ -113,7 +121,6 @@ class Scene2 extends Phaser.Scene{
         }
         else if (this.cursors.right.isDown){
             if (this.cursors.up.isDown && this.player.body.touching.down) {
-                console.log("działa");
                 this.player.setVelocityX(160);
                 this.player.setVelocityY(-430);
                 this.player.play('dwarf_jump_R', true)

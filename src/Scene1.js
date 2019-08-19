@@ -6,8 +6,9 @@ class Scene1 extends Phaser.Scene{
     preload(){
         this.load.image('ground', './src/assets/environment/platform 128x64.png');
         this.load.image('background', './src/assets/environment/Cave_background800x600.png');
-        this.load.image('green_gem', './src/assets/environment/green_gem.png');
+
         this.load.spritesheet('platform_sprite', './src/assets/environment/platform_sprite.png', {frameWidth: 40, frameHeight: 38});
+        this.load.spritesheet('gem_sprite', './src/assets/environment/Gems6colours16x16.png', {frameWidth: 16, frameHeight: 16});
         this.load.spritesheet('dwarf_stand_R', './src/assets/player/dwarf_stand_R.png', {frameWidth: 26, frameHeight: 20});
         this.load.spritesheet('dwarf_move_R', './src/assets/player/dwarf_move_R.png', {frameWidth: 28, frameHeight: 21});
         this.load.spritesheet('dwarf_jump_R', './src/assets/player/dwarf_jump_R.png', {frameWidth: 38, frameHeight: 32});
