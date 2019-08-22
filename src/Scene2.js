@@ -10,19 +10,43 @@ class Scene2 extends Phaser.Scene{
     create(){
         this.background = this.add.image(400, 300,'background');
 
-        this.platforms = this.physics.add.staticGroup();
+        this.platforms = this.physics.add.group();
+        this.platforms.defaults = {
+            setAccelerationX: 0,
+            setAccelerationY: 0,
+            setAllowDrag: true,
+            setAllowGravity: false,
+            setAllowRotation: true,
+            setAngularAcceleration: 0,
+            setAngularDrag: 0,
+            setAngularVelocity: 0,
+            setBounceX: 0,
+            setBounceY: 0,
+            setCollideWorldBounds: true,
+            setDragX: 200,
+            setDragY: 200,
+            setEnable: true,
+            setFrictionX: 200,
+            setFrictionY: 200,
+            setGravityX: 0,
+            setGravityY: 0,
+            setImmovable: true,
+            setMass: 0,
+            setVelocityX: 0,
+            setVelocityY: 0
+        }
+        console.log(this.platforms);
 
         this.gems = this.physics.add.sprite(600, 360, 'gem_sprite', 3).setScale(2);
        
         this.physics.world.enable(this.gems);
         this.gems.body.setCollideWorldBounds(true);
     
-        this.gems.body.setFrictionX(3)
+        this.gems.body.setFriction(200);
+        this.gems.body.setDrag(200);
         this.gems.body.setGravityY(300);
-
-        //  this.gems.create(260, 160, 'gem_sprite', 3).setScale(2);
-        console.log(this.gems)
-        
+        this.gems.body.setVelocity(0,0);
+        this.gems.body.setBounce(0.1)
 
         this.player = this.physics.add.sprite(config.width / 8, config.height - 100, 'dwarf_stand_R');
         this.player.setBounce(0.1).setCollideWorldBounds(true);
@@ -53,7 +77,7 @@ class Scene2 extends Phaser.Scene{
         this.platformCreator(500, 500, 40,'platform_sprite', 5); 
         this.platformCreator(600, 400, 40,'platform_sprite', 6); 
         this.platformCreator(100, 100, 40,'platform_sprite', 1); 
-        this.platformCreator(0, config.height-38, 40,'platform_sprite', 20, 1)  
+        this.platformCreator(0, config.height-38, 40,'platform_sprite', 20, 1);
     }
 
 
@@ -78,6 +102,9 @@ class Scene2 extends Phaser.Scene{
         }
         let lastTileX = ((centerTilesAmount + 1) * tileWidth) + startX;
         this.platforms.create(lastTileX, startY, spriteSheetKey, 2).setScale(scale);
+        // this.platforms.setDragX(100);
+        // this.platforms.setFrictionX(100);  
+        
     }
 
     gemCreator(x,y){
