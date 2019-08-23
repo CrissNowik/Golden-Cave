@@ -8,45 +8,32 @@ class Scene2 extends Phaser.Scene{
     }
 
     create(){
+        let platformsList = []
+    
         this.background = this.add.image(400, 300,'background');
 
         this.platforms = this.physics.add.group();
         this.platforms.defaults = {
-            setAccelerationX: 0,
-            setAccelerationY: 0,
-            setAllowDrag: true,
             setAllowGravity: false,
-            setAllowRotation: true,
-            setAngularAcceleration: 0,
-            setAngularDrag: 0,
-            setAngularVelocity: 0,
-            setBounceX: 0,
-            setBounceY: 0,
-            setCollideWorldBounds: true,
             setDragX: 200,
             setDragY: 200,
-            setEnable: true,
             setFrictionX: 200,
             setFrictionY: 200,
-            setGravityX: 0,
-            setGravityY: 0,
             setImmovable: true,
-            setMass: 0,
-            setVelocityX: 0,
-            setVelocityY: 0
         }
-        console.log(this.platforms);
+                
+        this.gems = this.physics.add.group();      
+        this.gems.defaults = {
+            setFriction: 200,
+            setDrag: 200,
+            setGravityY: 300,
+            setVelocity: 0,
+            setBounce: 0.1,
+            setCollideWorldBounds: true
+        }
 
-        this.gems = this.physics.add.sprite(600, 360, 'gem_sprite', 3).setScale(2);
-       
-        this.physics.world.enable(this.gems);
-        this.gems.body.setCollideWorldBounds(true);
-    
-        this.gems.body.setFriction(200);
-        this.gems.body.setDrag(200);
-        this.gems.body.setGravityY(300);
-        this.gems.body.setVelocity(0,0);
-        this.gems.body.setBounce(0.1)
+        // this.gems.create(100, 200, 'gem_sprite', 1).setScale(2);
+        this.gemCreator(100, 60, 'gem_sprite', 5, 2);
 
         this.player = this.physics.add.sprite(config.width / 8, config.height - 100, 'dwarf_stand_R');
         this.player.setBounce(0.1).setCollideWorldBounds(true);
@@ -59,25 +46,24 @@ class Scene2 extends Phaser.Scene{
 
         this.bat = this.add.sprite(100,100, 'bat');
         this.bat.setScale(3);
-
-        this.cursors = this.input.keyboard.createCursorKeys();
-
         this.bat.play('bat_attack');
-
         this.bat.setInteractive();
         this.input.on('gameobjectdown',this.destroyBat, this);
-
+        
         // this.add.text(20, 20, "Playing game", {
-        //     font: "25px Arial",
-        //     fill: "yellow"
-        // })
-        this.platformCreator(100, 100, 40,'platform_sprite', 1);
-        this.platformCreator(250, 200, 40,'platform_sprite', 1);
-        this.platformCreator(300, 300, 40,'platform_sprite', 2); 
-        this.platformCreator(500, 500, 40,'platform_sprite', 5); 
-        this.platformCreator(600, 400, 40,'platform_sprite', 6); 
-        this.platformCreator(100, 100, 40,'platform_sprite', 1); 
-        this.platformCreator(0, config.height-38, 40,'platform_sprite', 20, 1);
+            //     font: "25px Arial",
+            //     fill: "yellow"
+            // })
+        platformsList.push(this.platformCreator(100, 100, 40,'platform_sprite', 1));
+        platformsList.push(this.platformCreator(250, 200, 40,'platform_sprite', 1));
+        platformsList.push(this.platformCreator(300, 300, 40,'platform_sprite', 2)); 
+        platformsList.push(this.platformCreator(500, 500, 40,'platform_sprite', 5)); 
+        platformsList.push(this.platformCreator(600, 400, 40,'platform_sprite', 6)); 
+        platformsList.push(this.platformCreator(100, 100, 40,'platform_sprite', 1)); 
+        platformsList.push(this.platformCreator(0, config.height-38, 40,'platform_sprite', 20, 1));
+
+        this.cursors = this.input.keyboard.createCursorKeys();
+        
     }
 
 
@@ -93,6 +79,8 @@ class Scene2 extends Phaser.Scene{
      * @memberof Scene2
      */
     platformCreator(startX, startY, tileWidth, spriteSheetKey, centerTilesAmount, scale=1) {
+        let platformCoords = [];
+
         this.platforms.create(startX, startY, spriteSheetKey, 0).setScale(scale);
         
         for (let i = 1; i < centerTilesAmount+1; i++) {
@@ -100,15 +88,20 @@ class Scene2 extends Phaser.Scene{
             let nextTileX = startX + (tileWidth*i);
             this.platforms.create(nextTileX, startY, spriteSheetKey, 1).setScale(scale);
         }
+
         let lastTileX = ((centerTilesAmount + 1) * tileWidth) + startX;
         this.platforms.create(lastTileX, startY, spriteSheetKey, 2).setScale(scale);
-        // this.platforms.setDragX(100);
-        // this.platforms.setFrictionX(100);  
-        
+       
+        platformCoords.push(startX, startY, lastTileX);  
+        return platformCoords;
+
     }
 
-    gemCreator(x,y){
+    gemCreator(x, y, spriteSheetKey, spriteSheetLength, scale=1){
+        let tileIndex = Phaser.Math.Between(0, spriteSheetLength);
+        console.log(tileIndex);
         
+        this.gems.create(x, y, spriteSheetKey, tileIndex).setScale(scale);
     }
 
     movebat(bat, speed){
