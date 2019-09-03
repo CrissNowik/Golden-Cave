@@ -8,7 +8,6 @@ class Scene2 extends Phaser.Scene{
     }
 
     create(){
-        let platformsList = []
     
         this.background = this.add.image(400, 300,'background');
 
@@ -30,10 +29,7 @@ class Scene2 extends Phaser.Scene{
             setVelocity: 0,
             setBounce: 0.1,
             setCollideWorldBounds: true
-        }
-
-        // this.gems.create(100, 200, 'gem_sprite', 1).setScale(2);
-        this.gemCreator(100, 60, 'gem_sprite', 5, 2);
+        }      
 
         this.player = this.physics.add.sprite(config.width / 8, config.height - 100, 'dwarf_stand_R');
         this.player.setBounce(0.1).setCollideWorldBounds(true);
@@ -54,13 +50,19 @@ class Scene2 extends Phaser.Scene{
             //     font: "25px Arial",
             //     fill: "yellow"
             // })
-        platformsList.push(this.platformCreator(100, 100, 40,'platform_sprite', 1));
-        platformsList.push(this.platformCreator(250, 200, 40,'platform_sprite', 1));
-        platformsList.push(this.platformCreator(300, 300, 40,'platform_sprite', 2)); 
-        platformsList.push(this.platformCreator(500, 500, 40,'platform_sprite', 5)); 
-        platformsList.push(this.platformCreator(600, 400, 40,'platform_sprite', 6)); 
-        platformsList.push(this.platformCreator(100, 100, 40,'platform_sprite', 1)); 
-        platformsList.push(this.platformCreator(0, config.height-38, 40,'platform_sprite', 20, 1));
+            let platformsList = [
+                this.platformCreator(100, 100, 40,'platform_sprite', 1),
+                this.platformCreator(250, 200, 40,'platform_sprite', 1),
+                this.platformCreator(300, 300, 40,'platform_sprite', 2),
+                this.platformCreator(500, 500, 40,'platform_sprite', 5),
+                this.platformCreator(600, 400, 40,'platform_sprite', 6),
+                this.platformCreator(100, 100, 40,'platform_sprite', 1),
+                this.platformCreator(0, config.height-38, 40,'platform_sprite', 20, 1)
+            ]
+
+            console.log(platformsList);
+
+            this.gemCreator(100, 60, 'gem_sprite', 5, 2);
 
         this.cursors = this.input.keyboard.createCursorKeys();
         
@@ -96,6 +98,15 @@ class Scene2 extends Phaser.Scene{
         return platformCoords;
 
     }
+
+    // TODO
+    //gemCreator ma:
+    // - pobierać współrzędne platform z tablicy platformsList
+    // - losować kolor kryształu
+    // - umieszczać kryształy na w losowym miejscu, ale platformie 
+    // - w praktyce 1 segment platformy = 1 kryształ, 
+    // - np. platforma długa na 5 segmentów może mieć 0-5 kryształów
+    // - kryształy mogą się od siebie odbijać
 
     gemCreator(x, y, spriteSheetKey, spriteSheetLength, scale=1){
         let tileIndex = Phaser.Math.Between(0, spriteSheetLength);
